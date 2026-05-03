@@ -3,14 +3,23 @@ from flask import Flask, render_template, request
 import requests
 import os
 
+
 def download_file(url, filename):
     if not os.path.exists(filename):
         print(f"Downloading {filename}...")
-        r = requests.get(url)
+        r = requests.get(url, stream=True)
         with open(filename, 'wb') as f:
-            f.write(r.content)
-movies_url = "https://drive.google.com/uc?id=17sJebkWreN0l-r80HbHO_5a-FaiN19fg"
-similarity_url = "https://drive.google.com/uc?id=1n8PdGQUQsgLBFDgpx8GCAZyBl-AHnV56"
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+movies_url = "https://drive.google.com/uc?export=download&id=17sJebkWreN0l-r80HbHO_5a-FaiN19fg"
+similarity_url = "https://drive.google.com/uc?export=download&id=1n8PdGQUQsgLBFDgpx8GCAZyBl-AHnV56"
+
+if os.path.exists("movies.pkl"):
+    os.remove("movies.pkl")
+
+if os.path.exists("similarity.pkl"):
+    os.remove("similarity.pkl")
 
 download_file(movies_url, "movies.pkl")
 download_file(similarity_url, "similarity.pkl")
