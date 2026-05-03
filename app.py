@@ -87,5 +87,5 @@ def index():
     posters = [p if p else "https://via.placeholder.com/200x300?text=No+Image" for p in posters]
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
