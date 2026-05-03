@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>🎬 Movie Recommendation System</h1>
+
+<div class="search-container">
+    <form method="POST">
+        <input type="text" name="movie" id="searchBox" placeholder="Search movie..." value="{{ selected_movie }}">
+        <button type="submit">Recommend</button>
+    </form>
+    {% if error %}
+    <p style="color:red; text-align:center;">{{ error }}</p>
+    {% endif %}
+    <ul id="suggestions"></ul>
+</div>
+
+<div class="container">
+    {% for i in range(recommended|length) %}
+    <div class="card">
+        <img src="{{ posters[i] }}" 
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300?text=No+Poster';">
+        <p>{{ recommended[i] }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+    <script>
+    const movies = {{ movies|tojson | safe }};
+
+    const searchBox = document.getElementById("searchBox");
+    const suggestions = document.getElementById("suggestions");
+
+    searchBox.addEventListener("input", function () {
+        const value = this.value.toLowerCase();
+        suggestions.innerHTML = "";
+
+        if (!value) return;
+
+        const filtered = movies
+            .filter(m => m.toLowerCase().includes(value))
+            .slice(0, 5);
+
+        filtered.forEach(movie => {
+            const li = document.createElement("li");
+            li.textContent = movie;
+
+            li.onclick = () => {
+                searchBox.value = movie;
+                suggestions.innerHTML = "";
+            };
+
+            suggestions.appendChild(li);
+        });
+    });
+</script>
+
+</body>
+</html>
