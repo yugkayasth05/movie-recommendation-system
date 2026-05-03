@@ -12,8 +12,8 @@ def download_file(url, filename):
             for chunk in r.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
-movies_url = "https://drive.google.com/uc?export=download&id=17sJebkWreN0l-r80HbHO_5a-FaiN19fg&confirm=t"
-similarity_url = "https://drive.google.com/uc?export=download&id=1n8PdGQUQsgLBFDgpx8GCAZyBl-AHnV56&confirm=t"
+movies_url = "https://github.com/yugkayasth05/movie-recommendation-system/releases/download/v1.0/movies.pkl"
+similarity_url = "https://github.com/yugkayasth05/movie-recommendation-system/releases/download/v1.0/similarity.pkl"
 
 if os.path.exists("movies.pkl"):
     os.remove("movies.pkl")
